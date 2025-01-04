@@ -2,10 +2,17 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>keyboard_teleop</name>
-  <version>0.0.0</version>
-  <description>Teleop of keyboard</description>
+  <version>0.0.1</version>
+  <description>A ROS 2 package for teleoperation using keyboard input.</description>
   <maintainer email="s23c1114qb@s.chibakoudai.jp">Kenta Hirach</maintainer>
-  <license>TODO: License declaration</license>
+  <license>BSD-3-Clause</license>
+  <license>MIT (for test files)</license>
+   <dependencies>
+    <build_depend>ament_python</build_depend>
+    <exec_depend>rclpy</exec_depend>
+    <exec_depend>geometry_msgs</exec_depend>
+    <exec_depend>sshkeyboard</exec_depend>
+  </dependencies>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

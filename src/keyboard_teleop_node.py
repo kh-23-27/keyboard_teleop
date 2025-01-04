@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+
+# SPDX-FileCopyrightText: 2024 Kenta Hirachi
+# SPDX-License=Identifier: BSD-3-Clause
+
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist  # Twist メッセージ型をインポート
@@ -22,20 +26,20 @@ class KeyboardTeleop(Node):
          q              e
                 w
              
-            a   s   d
+            a       d
 
-                x
+                s
          z              c
 
         j: Increase x, y speed
         k: Decrease x, y speed
-        Space: Reset speed to 0
+        
         ---------------------------
         """
         self.get_logger().info(msg)
 
     def process_keys(self):
-        # キーの同時押しに応じて速度を設定
+        
         if 'q' in self.pressed_keys:  # 左上
             self.twist.linear.x = self.speed
             self.twist.linear.y = -self.speed
