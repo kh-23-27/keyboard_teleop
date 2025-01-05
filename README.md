@@ -56,4 +56,4 @@ angular:
 - このパッケージの[test.yml](https://github.com/kh-23-27/keyboard_teleop/blob/main/.github/workflows/test.yml)では, [コンテナ](https://hub.docker.com/r/ryuichiueda/ubuntu22.04-ros2)（by Ryuichi Ueda）を利用しています.
 - このパッケージはApache License, Version 2.0に基づき公開されています.
 - 詳細は[LICENSE](https://github.com/kh-23-27/keyboard_teleop/blob/main/LICENSE)を確認してください。
-- © 2024 Kenta Hirachi
+- © 2025 Kenta Hirachi
