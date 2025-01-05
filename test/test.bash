@@ -11,8 +11,11 @@ source $dir/.bashrc
 
 SESSION_NAME="teleop_session"
 tmux new-session -d -s $SESSION_NAME "ros2 run keyboard_teleop keyboard_teleop > $HOME/tmp/keyboard_teleop.log 2>&1"
+tmux send-keys -t keyboard_teleop "ros2 run keyboard_teleop keyboard_teleop" C-m
 sleep 5
-ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.0, y: -0.5, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}" --once
-ros2 topic echo /cmd_vel -n 1 | tee /tmp/cmd_vel_output.log
+tmux send-keys -t keyboard_teleop "w" C-m
+sleep 1
+ros2 topic echo /cmd_vel --once
+ros2 topic echo /cmd_vel -n 1 > /tmp/cmd_vel_output.log
 
 cat /tmp/cmd_vel_output.log
