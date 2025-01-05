@@ -22,7 +22,7 @@ setup(
     maintainer='Kenta Hirachi',
     maintainer_email='s23c1114qb@s.chibakodai.jp',
     description='A ROS 2 package for teleoperation using keyboard input.',
-    license='BSD-3-Clause',
+    license='Apache-2.0',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [

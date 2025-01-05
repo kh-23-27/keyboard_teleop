@@ -5,7 +5,7 @@
   <version>0.0.1</version>
   <description>A ROS 2 package for teleoperation using keyboard input.</description>
   <maintainer email="s23c1114qb@s.chibakoudai.jp">Kenta Hirach</maintainer>
-  <license>BSD-3-Clause</license>
+  <license>Apache-2.0</license>
   <license>MIT (for test files)</license>
   <build_depend>ament_python</build_depend>
   <exec_depend>rclpy</exec_depend>

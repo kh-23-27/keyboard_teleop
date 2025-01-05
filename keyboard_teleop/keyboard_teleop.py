@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # SPDX-FileCopyrightText: 2024 Kenta Hirachi
-# SPDX-License=Identifier: BSD-3-Clause
+# SPDX-License=Identifier: Apache 2.0
 
 import rclpy
 from rclpy.node import Node
