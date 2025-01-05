@@ -1,106 +1,101 @@
 #!/usr/bin/env python3
 
 # SPDX-FileCopyrightText: 2025 Kenta Hirachi
-# SPDX-License=Identifier: Apache 2.0
+# SPDX-License-Identifier: Apache 2.0
 
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Twist  # Twist メッセージ型をインポート
-from sshkeyboard import listen_keyboard
+from geometry_msgs.msg import Twist
+import sys
+import termios
+import tty
+import select
 
-class KeyboardTeleop(Node):
-    def __init__(self):  # コンストラクタ
-        super().__init__('keyboard_teleop_node')
+
+instructions = """
+---------------------------
+Moving around:
+
+   q    w    e
+   a         d
+   z    s    c
+
+j: Increase speed
+k: Decrease speed
+l: Reset speed to 0.5
+---------------------------
+"""
+
+
+key_mapping = {
+    'w': (1, 0),
+    's': (-1, 0),
+    'a': (0, -1),
+    'd': (0, 1),
+    'q': (1, -1),
+    'e': (1, 1),
+    'z': (-1, -1),
+    'c': (-1, 1),
+}
+
+class TeleopTwistKeyboard(Node):
+    def __init__(self):
+        super().__init__('teleop_twist_keyboard')
         self.publisher = self.create_publisher(Twist, 'cmd_vel', 10)
-        self.twist = Twist()
         self.speed = 0.5
-        self.pressed_keys = set()  # 押されているキーを管理するセット
+        self.twist = Twist()
+        print(instructions)
 
-        self.display_instructions()
+    def get_key(self):
 
-    def display_instructions(self):
-        msg = """
-        ---------------------------
-        Moving around:
-             
-         q              e
-                w
-             
-            a       d
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(fd)
+            rlist, _, _ = select.select([sys.stdin], [], [], 0.1)
+            if rlist:
+                return sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        return None
 
-                s
-         z              c
+    def run(self):
+        try:
+            while rclpy.ok():
+                key = self.get_key()
+                if key in key_mapping:
+                    self.twist.linear.x = self.speed * key_mapping[key][0]
+                    self.twist.linear.y = self.speed * key_mapping[key][1]
+                elif key == 'j':  
+                    self.speed += 0.1
+                    print(f"Speed increased to {self.speed}")
+                elif key == 'k':  
+                    self.speed = max(0.1, self.speed - 0.1)
+                    print(f"Speed decreased to {self.speed}")
+                elif key == 'l':  #
+                    self.speed = 0.5
+                    print("Speed reset to 0.5")
+                elif key == '\x03':  
+                    break
+                else:  
+                    self.twist.linear.x = 0.0
+                    self.twist.linear.y = 0.0
 
-        j: Increase x, y speed
-        k: Decrease x, y speed
-        l: Reset  x, y speed to 0.5
-        ---------------------------
-        """
-        self.get_logger().info(msg)
+                self.publisher.publish(self.twist)
 
-    def process_keys(self):
-        
-        if 'q' in self.pressed_keys:  # 左上
-            self.twist.linear.x = self.speed
-            self.twist.linear.y = -self.speed
-        elif 'e' in self.pressed_keys: # 右上
-            self.twist.linear.x = self.speed
-            self.twist.linear.y = self.speed
-        elif 'z' in self.pressed_keys:  # 左下
-            self.twist.linear.x = -self.speed
-            self.twist.linear.y = -self.speed
-        elif 'c' in self.pressed_keys:  # 右下
-            self.twist.linear.x = -self.speed
-            self.twist.linear.y = self.speed
-        elif 'w' in self.pressed_keys:  # 前進
-            self.twist.linear.x = self.speed
-            self.twist.linear.y = 0.0
-        elif 's' in self.pressed_keys:  # 後退
-            self.twist.linear.x = -self.speed
-            self.twist.linear.y = 0.0
-        elif 'a' in self.pressed_keys:  # 左移動
-            self.twist.linear.x = 0.0
-            self.twist.linear.y = -self.speed
-        elif 'd' in self.pressed_keys:  # 右移動
-            self.twist.linear.x = 0.0
-            self.twist.linear.y = self.speed
-        else:  # 停止
+        except Exception as e:
+            self.get_logger().error(f"Error: {e}")
+        finally:
             self.twist.linear.x = 0.0
             self.twist.linear.y = 0.0
-
-        self.publisher.publish(self.twist)
-
-    def handle_key_press(self, key):
-        
-        self.pressed_keys.add(key)
-        if key == 'j':  # 速度アップ
-            self.speed += 0.1
-            self.get_logger().info(f"Speed increased to {self.speed}")
-        elif key == 'k':  # 速度ダウン
-            self.speed = max(0.1, self.speed - 0.1) 
-            self.get_logger().info(f"Speed decreased to {self.speed}")
-        elif key == 'l':  # 速度リセット
-            self.speed = 0.5
-            self.get_logger().info(f"Speed decreased to {self.speed}")
-        self.process_keys()
-
-    def handle_key_release(self, key):
-
-        self.pressed_keys.discard(key)
-        self.process_keys()
+            self.publisher.publish(self.twist)
+            print("\nExiting teleop_twist_keyboard...")
 
 def main():
     rclpy.init()
-    node = KeyboardTeleop()
-    try:
-        listen_keyboard(
-            on_press=node.handle_key_press,
-            on_release=node.handle_key_release,
-        )
-    except Exception as e:
-        node.get_logger().error(f"Error: {e}")
-    finally:
-        rclpy.try_shutdown()
+    node = TeleopTwistKeyboard()
+    node.run()
+    rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
