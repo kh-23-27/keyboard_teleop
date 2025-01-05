@@ -1,7 +1,7 @@
 # keyboard_teleop
-
+[![test](https://github.com/kh-23-27/keyboard_teleop/actions/workflows/test.yml/badge.svg)](https://github.com/kh-23-27/keyboard_teleop/actions/workflows/test.yml)
 ## 概要
-このパッケージは対象物をキーボード操作するROS2のパッケージです.
+このパッケージはリモートで対象物をキーボード操作するROS2のパッケージです.
 
 ## ノード
 - keyboard_teleop
@@ -13,8 +13,6 @@
 ### セットアップ
 - ROS 2インストール  
 ROS 2は各自でインストールしてください.   
-- sshkeyboardのインストール
-$ pip install sshkeyboard
 ## 実行例
 - 端末１
 以下のコマンドを実行します.
@@ -25,18 +23,14 @@ $ ros2 run keyboard_teleop keyborad_teleop
 ```
 ---------------------------
 Moving around:
-       
-q              e
-       w
-             
-   a       d
 
-       s
-z              c
+   q    w    e
+   a         d
+   z    s    c
 
-j: Increase x, y speed
-k: Decrease x, y speed
-l: Reset  x, y speed to 0.5        
+j: Increase speed
+k: Decrease speed
+l: Reset speed to 0.5
 ---------------------------
 ```
 wを押すと前進、sを押すと後退、aを押すと左に、dを押すと右に動きます.

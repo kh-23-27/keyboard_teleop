@@ -8,10 +8,10 @@ jobs:
       - uses: actions/checkout@v2 
       - name: Setup ROS environment
         run: |
-          apt-get update 
-          apt-get install -y python3-pip
-          python3 -m pip install --upgrade pip
-          python3 -m pip install sshkeyboard
+          #apt-get update 
+          #apt-get install -y python3-pip
+          #python3 -m pip install --upgrade pip
+          #    python3 -m pip install sshkeyboard
       - name: build and test
         run: |
           rsync -av ./ /root/ros2_ws/src/keyboard_teleop/
