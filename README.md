@@ -5,7 +5,7 @@
 
 ## ノード
 - keyboard_teleop
-　　- 押されたキーに応じた速度をcmd_velトピックにパブリッシュします.
+    - 押されたキーに応じた速度をトピック\cmd_velから出します.
 ## このパッケージを使用する前に
 ### 使用環境
 - Ubuntu 22.04 LTS
@@ -14,7 +14,7 @@
 - ROS 2インストール  
 ROS 2は各自でインストールしてください.   
 - sshkeyboardのインストール
-$ pip3 install sshkeyboard
+$ pip install sshkeyboard
 ## 実行例
 - 端末１
 以下のコマンドを実行します.
@@ -36,7 +36,7 @@ z              c
 
 j: Increase x, y speed
 k: Decrease x, y speed
-        
+l: Reset  x, y speed to 0.5        
 ---------------------------
 ```
 wを押すと前進、sを押すと後退、aを押すと左に、dを押すと右に動きます.

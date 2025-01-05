@@ -33,7 +33,7 @@ class KeyboardTeleop(Node):
 
         j: Increase x, y speed
         k: Decrease x, y speed
-        
+        l: Reset  x, y speed to 0.5
         ---------------------------
         """
         self.get_logger().info(msg)
@@ -68,22 +68,24 @@ class KeyboardTeleop(Node):
             self.twist.linear.x = 0.0
             self.twist.linear.y = 0.0
 
-        # メッセージをパブリッシュ
         self.publisher.publish(self.twist)
 
     def handle_key_press(self, key):
-        # キー押下時の処理
+        
         self.pressed_keys.add(key)
         if key == 'j':  # 速度アップ
             self.speed += 0.1
+            self.get_logger().info(f"Speed increased to {self.speed}")
         elif key == 'k':  # 速度ダウン
-            self.speed = max(0.1, self.speed - 0.1)  # 速度が0未満にならないようにする
-        elif key == ' ':  # スペースで速度リセット
+            self.speed = max(0.1, self.speed - 0.1) 
+            self.get_logger().info(f"Speed decreased to {self.speed}")
+        elif key == 'l':  # 速度リセット
             self.speed = 0.5
+            self.get_logger().info(f"Speed decreased to {self.speed}")
         self.process_keys()
 
     def handle_key_release(self, key):
-        # キー解放時の処理
+
         self.pressed_keys.discard(key)
         self.process_keys()
 
@@ -91,7 +93,6 @@ def main():
     rclpy.init()
     node = KeyboardTeleop()
     try:
-        # sshkeyboardのリスナーを開始
         listen_keyboard(
             on_press=node.handle_key_press,
             on_release=node.handle_key_release,
