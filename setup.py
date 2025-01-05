@@ -1,6 +1,6 @@
 
-# SPDX-FileCopyrightText: 2024 Kenta Hirachi
-# SPDX-License=Identifier: BSD-3-Clause
+# SPDX-FileCopyrightText: 2025 Kenta Hirachi
+# SPDX-License=Identifier: Apache 2.0
 
 import os
 from glob import glob
