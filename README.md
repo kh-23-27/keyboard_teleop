@@ -1,7 +1,7 @@
 # keyboard_teleop
 [![test](https://github.com/kh-23-27/keyboard_teleop/actions/workflows/test.yml/badge.svg)](https://github.com/kh-23-27/keyboard_teleop/actions/workflows/test.yml)
 ## 概要
-このパッケージはリモートで対象物をキーボード操作するROS2のパッケージです.
+このパッケージはリモートで対象物をキーボード操作するROS 2のパッケージです.
 
 ## ノード
 - keyboard_teleop
