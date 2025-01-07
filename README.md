@@ -12,7 +12,8 @@
 - ROS 2 Humble
 ### セットアップ
 - ROS 2インストール  
-ROS 2は各自でインストールしてください.   
+ROS 2は各自でインストールしてください.
+詳細は[インストール](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)を確認してください.   
 ## 実行例
 - 端末１
 以下のコマンドを実行します.
